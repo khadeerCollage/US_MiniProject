@@ -147,7 +147,7 @@ Marcus: Not appending the assistant's reply back to the list. I see this every w
 }
 
 def print_banner():
-    print("\n   Persona Bot v2  —  Topic 2, Mission 2  (Few-Shot)\n")
+    print("\n   Persona Bot v2  (Few-Shot)\n")
 
 def list_personas():
     print("  Available Personas:")
