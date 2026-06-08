@@ -1,0 +1,40 @@
+# US Mini Project - Groq AI Integration
+
+This repository contains a suite of CLI tools configured to interface with the Groq API using the free-tier llama-3.3-70b-versatile model.
+
+## File Structure
+
+* utils.py: Shared helper functions to load environment variables from a local .env file and initialize the Groq client.
+* setup_check_groq.py: A connection verification script to confirm your Groq API key is valid and working.
+* chat.py: A CLI conversational chatbot featuring message history preservation and session token usage tracking.
+* summarize.py: A document summarizer that accepts any plain text file, handles truncation for large context limits, and outputs structured summaries.
+* persona_bot.py: An interactive character Q&A chatbot allowing real-time switching between four distinct system-prompt-driven personas:
+  * Coach Alex: Silicon Valley career coach.
+  * Dr. Sarah Chen: Senior machine learning scientist.
+  * Marcus the Builder: Senior full-stack engineer.
+  * Priya the Interviewer: Technical interviewer.
+
+## Installation and Configuration
+
+1. Initialize and activate your virtual environment:
+   .\venv\Scripts\activate
+
+2. Install dependencies:
+   pip install groq
+
+3. Configure your API key in a local .env file in the root directory:
+   GROQ_API_KEY="your_api_key_here"
+
+## Usage
+
+* To run the connection test:
+  python setup_check_groq.py
+
+* To start the chat loop:
+  python chat.py
+
+* To summarize a document:
+  python summarize.py <file_path>
+
+* To interact with different personas:
+  python persona_bot.py
