@@ -8,11 +8,14 @@ This repository contains a suite of CLI tools configured to interface with the G
 * setup_check_groq.py: A connection verification script to confirm your Groq API key is valid and working.
 * chat.py: A CLI conversational chatbot featuring message history preservation and session token usage tracking.
 * summarize.py: A document summarizer that accepts any plain text file, handles truncation for large context limits, and outputs structured summaries.
+* summarize_v2.py: A document summarizer demonstrating plain vs structured XML prompts using the --compare flag.
 * persona_bot.py: An interactive character Q&A chatbot allowing real-time switching between four distinct system-prompt-driven personas:
   * Coach Alex: Silicon Valley career coach.
   * Dr. Sarah Chen: Senior machine learning scientist.
   * Marcus the Builder: Senior full-stack engineer.
   * Priya the Interviewer: Technical interviewer.
+* persona_bot_v2.py: An interactive persona chatbot that demonstrates the power of few-shot prompting to shape character responses.
+* chain_of_thought.py: A Chain-of-Thought reasoning bot demonstrating how to force the model to reason step-by-step before answering.
 
 ## Installation and Configuration
 
@@ -35,6 +38,11 @@ This repository contains a suite of CLI tools configured to interface with the G
 
 * To summarize a document:
   python summarize.py <file_path>
+  python summarize_v2.py <file_path> [--compare]
 
 * To interact with different personas:
   python persona_bot.py
+  python persona_bot_v2.py
+
+* To test Chain-of-Thought reasoning:
+  python chain_of_thought.py
