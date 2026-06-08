@@ -16,6 +16,7 @@ This repository contains a suite of CLI tools configured to interface with the G
   * Priya the Interviewer: Technical interviewer.
 * persona_bot_v2.py: An interactive persona chatbot that demonstrates the power of few-shot prompting to shape character responses.
 * chain_of_thought.py: A Chain-of-Thought reasoning bot demonstrating how to force the model to reason step-by-step before answering.
+* prompt_scroing_upon_techniques.py: A testing harness that runs simple, XML structured, and Chain-of-Thought prompts against the same inputs to objectively evaluate output quality and token efficiency.
 
 ## Installation and Configuration
 
@@ -46,3 +47,6 @@ This repository contains a suite of CLI tools configured to interface with the G
 
 * To test Chain-of-Thought reasoning:
   python chain_of_thought.py
+
+* To evaluate prompt techniques with the scoring harness:
+  python prompt_scroing_upon_techniques.py [--topic career | technical | default]
