@@ -17,6 +17,8 @@ This repository contains a suite of CLI tools configured to interface with the G
 * persona_bot_v2.py: An interactive persona chatbot that demonstrates the power of few-shot prompting to shape character responses.
 * chain_of_thought.py: A Chain-of-Thought reasoning bot demonstrating how to force the model to reason step-by-step before answering.
 * prompt_scroing_upon_techniques.py: A testing harness that runs simple, XML structured, and Chain-of-Thought prompts against the same inputs to objectively evaluate output quality and token efficiency.
+* Real_Time_Agents/tools.py: Contains the actual Python functions that get called when the model decides to use a tool (e.g., search_web, read_file, calculate).
+* Real_Time_Agents/tools_working.py: A step-by-step visual demonstration of the LLM tool-calling loop (function calling) using Groq.
 
 ## Installation and Configuration
 
@@ -50,3 +52,6 @@ This repository contains a suite of CLI tools configured to interface with the G
 
 * To evaluate prompt techniques with the scoring harness:
   python prompt_scroing_upon_techniques.py [--topic career | technical | default]
+
+* To run the step-by-step tool use explanation:
+  python Real_Time_Agents/tools_working.py
