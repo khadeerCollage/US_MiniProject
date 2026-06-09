@@ -10,7 +10,7 @@ import json
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils import get_groq_client
-from tools import execute_tool
+from real_search import execute_tool
 
 MODEL = "llama-3.3-70b-versatile"
 MAX_TOKENS = 1024

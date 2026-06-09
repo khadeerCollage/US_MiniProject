@@ -19,6 +19,8 @@ This repository contains a suite of CLI tools configured to interface with the G
 * prompt_scroing_upon_techniques.py: A testing harness that runs simple, XML structured, and Chain-of-Thought prompts against the same inputs to objectively evaluate output quality and token efficiency.
 * Real_Time_Agents/tools.py: Contains the actual Python functions that get called when the model decides to use a tool (e.g., search_web, read_file, calculate).
 * Real_Time_Agents/tools_working.py: A step-by-step visual demonstration of the LLM tool-calling loop (function calling) using Groq.
+* Real_Time_Agents/research_assistant.py: A fully functional agentic research assistant that can autonomously use multiple tools in an iterative loop to answer complex questions using Groq.
+* Real_Time_Agents/real_search.py: Search integrations for the Research Assistant, implementing DuckDuckGo, SerpAPI, and Tavily interfaces.
 
 ## Installation and Configuration
 
@@ -55,3 +57,6 @@ This repository contains a suite of CLI tools configured to interface with the G
 
 * To run the step-by-step tool use explanation:
   python Real_Time_Agents/tools_working.py
+
+* To run the autonomous research assistant agent:
+  python Real_Time_Agents/research_assistant.py
