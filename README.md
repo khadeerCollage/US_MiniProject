@@ -23,6 +23,11 @@ This repository contains a suite of CLI tools configured to interface with the G
 * Real_Time_Agents/real_search.py: Search integrations for the Research Assistant, implementing DuckDuckGo, SerpAPI, and Tavily interfaces.
 * multi-agents/agent1_summarize.py: Part of the multi-agent pipeline. A focused subagent that reads a CSV dataset, profiles it, and generates a structured summary using Groq.
 * multi-agents/agent2_insights.py: Part of the multi-agent pipeline. Generates strategic, actionable business insights from Agent 1's structured summary using Groq and Chain-of-Thought reasoning.
+* MCP (Model Context Protocol)/test_mcp_tools.py: Tests the 5 career research MCP tools directly without running a server.
+* MCP (Model Context Protocol)/mcp_server_career.py: A custom FastMCP server that exposes 5 career research and analysis tools to any MCP-compatible client.
+* MCP (Model Context Protocol)/agent_with_mcp.py: An interactive agent connected directly to the MCP server using the Anthropic API.
+* MCP (Model Context Protocol)/claude_desktop_setup.py: A utility script to generate the Claude Desktop configuration required to connect the desktop app to local MCP servers.
+
 ## Installation and Configuration
 
 1. Initialize and activate your virtual environment:
@@ -72,3 +77,13 @@ This repository contains a suite of CLI tools configured to interface with the G
     python multi-agents/agent2_insights.py
     ```
     *(Note: Agent 2 runs Agent 1 under the hood to profile `sample_data.csv`, then applies Chain-of-Thought reasoning to generate structured strategic insights).*
+
+* To interact with the MCP Server and Agent:
+  - Run the MCP server in SSE mode in Terminal 1:
+    ```bash
+    python "MCP (Model Context Protocol)/mcp_server_career.py" --sse
+    ```
+  - Connect the MCP agent to the server in Terminal 2:
+    ```bash
+    python "MCP (Model Context Protocol)/agent_with_mcp.py"
+    ```
