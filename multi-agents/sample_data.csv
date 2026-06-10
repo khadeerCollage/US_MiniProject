@@ -1,0 +1,31 @@
+company,role_title,base_salary_usd,years_experience,remote_friendly,primary_skill,secondary_skill,interview_rounds,offer_acceptance_rate,location
+Anthropic,AI Safety Engineer,210000,5,Yes,Python,LLM APIs,4,72,San Francisco
+Anthropic,Research Engineer,195000,4,Yes,Python,ML Research,4,68,San Francisco
+Anthropic,ML Engineer,185000,3,Yes,PyTorch,Transformers,4,75,Remote
+Anthropic,Full Stack Engineer,170000,3,Yes,Python,React,3,80,Remote
+Anthropic,AI Applications Engineer,160000,2,Yes,Python,Claude API,3,82,Remote
+OpenAI,Research Scientist,230000,6,Hybrid,Python,ML Research,5,55,San Francisco
+OpenAI,ML Engineer,200000,4,Hybrid,PyTorch,Distributed Training,5,60,San Francisco
+OpenAI,Software Engineer,190000,3,Hybrid,Python,APIs,4,65,San Francisco
+OpenAI,AI Engineer,175000,2,Yes,Python,GPT APIs,3,70,Remote
+Google DeepMind,Research Scientist,245000,7,Hybrid,Python,JAX,5,45,London
+Google DeepMind,ML Engineer,210000,5,Hybrid,Python,TensorFlow,5,50,Mountain View
+Google DeepMind,Software Engineer,185000,3,Hybrid,Python,Cloud,4,62,Remote
+Meta AI,Research Engineer,220000,5,Hybrid,Python,PyTorch,5,58,Menlo Park
+Meta AI,ML Engineer,195000,4,Hybrid,Python,LLaMA,4,63,Menlo Park
+Meta AI,AI Engineer,165000,2,Yes,Python,Open Source,3,73,Remote
+Cohere,ML Engineer,175000,3,Yes,Python,NLP,3,78,Remote
+Cohere,AI Engineer,155000,2,Yes,Python,LLM APIs,3,81,Remote
+Mistral AI,Research Engineer,185000,4,Yes,Python,Transformers,4,70,Remote
+Mistral AI,ML Engineer,170000,3,Yes,Python,PyTorch,3,75,Remote
+Hugging Face,ML Engineer,160000,3,Yes,Python,Transformers,3,82,Remote
+Hugging Face,AI Engineer,145000,2,Yes,Python,Open Source,3,85,Remote
+Scale AI,ML Engineer,180000,3,Yes,Python,Data Labeling,4,72,Remote
+Scale AI,AI Engineer,155000,2,Yes,Python,APIs,3,78,Remote
+Together AI,ML Engineer,170000,3,Yes,Python,LLMs,3,80,Remote
+Inflection AI,Research Engineer,195000,4,Hybrid,Python,ML Research,4,65,Palo Alto
+Perplexity AI,AI Engineer,165000,2,Yes,Python,RAG,3,79,Remote
+Pika Labs,ML Engineer,160000,2,Yes,Python,Video AI,3,77,Remote
+Stability AI,Research Engineer,175000,3,Yes,Python,Diffusion,4,68,Remote
+Character AI,AI Engineer,160000,2,Yes,Python,LLM APIs,3,80,Remote
+Runway ML,ML Engineer,165000,3,Yes,Python,Video AI,3,76,Remote

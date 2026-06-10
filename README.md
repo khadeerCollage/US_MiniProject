@@ -21,7 +21,8 @@ This repository contains a suite of CLI tools configured to interface with the G
 * Real_Time_Agents/tools_working.py: A step-by-step visual demonstration of the LLM tool-calling loop (function calling) using Groq.
 * Real_Time_Agents/research_assistant.py: A fully functional agentic research assistant that can autonomously use multiple tools in an iterative loop to answer complex questions using Groq.
 * Real_Time_Agents/real_search.py: Search integrations for the Research Assistant, implementing DuckDuckGo, SerpAPI, and Tavily interfaces.
-
+* multi-agents/agent1_summarize.py: Part of the multi-agent pipeline. A focused subagent that reads a CSV dataset, profiles it, and generates a structured summary using Groq.
+* multi-agents/agent2_insights.py: Part of the multi-agent pipeline. Generates strategic, actionable business insights from Agent 1's structured summary using Groq and Chain-of-Thought reasoning.
 ## Installation and Configuration
 
 1. Initialize and activate your virtual environment:
@@ -60,3 +61,14 @@ This repository contains a suite of CLI tools configured to interface with the G
 
 * To run the autonomous research assistant agent:
   python Real_Time_Agents/research_assistant.py
+
+* To run the multi-agent profiling and insights pipeline:
+  - Run Agent 1 (CSV Summarization) standalone:
+    ```bash
+    python multi-agents/agent1_summarize.py multi-agents/sample_data.csv
+    ```
+  - Run Agent 2 (Insight Generation with CoT) standalone:
+    ```bash
+    python multi-agents/agent2_insights.py
+    ```
+    *(Note: Agent 2 runs Agent 1 under the hood to profile `sample_data.csv`, then applies Chain-of-Thought reasoning to generate structured strategic insights).*
