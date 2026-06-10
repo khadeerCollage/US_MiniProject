@@ -3,7 +3,9 @@ Groq Persona Q&A Bot
 Interactive CLI chat bot allowing swaps between different system prompt personas using llama-3.3-70b-versatile.
 """
 
+import os
 import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils import get_groq_client
 
 MODEL = "llama-3.3-70b-versatile"

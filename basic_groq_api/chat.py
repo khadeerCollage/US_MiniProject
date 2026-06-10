@@ -3,7 +3,9 @@ Groq CLI Chatbot
 Interactive CLI chatbot with conversation history and token usage tracking using llama-3.3-70b-versatile.
 """
 
+import os
 import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils import get_groq_client
 
 client = get_groq_client()

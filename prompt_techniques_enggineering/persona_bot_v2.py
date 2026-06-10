@@ -5,6 +5,7 @@ Demonstrates few-shot prompting using Groq and llama-3.3-70b-versatile.
 
 import os
 import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils import get_groq_client
 
 MODEL = "llama-3.3-70b-versatile"

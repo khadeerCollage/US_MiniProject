@@ -6,6 +6,7 @@ Tests multiple prompt strategies on the same input using Groq and llama-3.3-70b-
 import os
 import sys
 import time
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils import get_groq_client
 
 MODEL = "llama-3.3-70b-versatile"

@@ -3,7 +3,9 @@ Groq API Live Connection Test
 Sends a single non-streaming message to Groq using llama-3.3-70b-versatile to verify the API key is active.
 """
 
+import os
 import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils import get_groq_client
 
 

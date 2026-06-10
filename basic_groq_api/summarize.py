@@ -5,6 +5,7 @@ Injects file content into Groq context using llama-3.3-70b-versatile and produce
 
 import os
 import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils import get_groq_client
 
 client = get_groq_client()

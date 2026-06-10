@@ -5,9 +5,9 @@ This repository contains a suite of CLI tools configured to interface with the G
 ## File Structure
 
 * utils.py: Shared helper functions to load environment variables from a local .env file and initialize the Groq client.
-* setup_check_groq.py: A connection verification script to confirm your Groq API key is valid and working.
-* chat.py: A CLI conversational chatbot featuring message history preservation and session token usage tracking.
-* summarize.py: A document summarizer that accepts any plain text file, handles truncation for large context limits, and outputs structured summaries.
+* basic_groq_api/setup_check_groq.py: A connection verification script to confirm your Groq API key is valid and working.
+* basic_groq_api/chat.py: A CLI conversational chatbot featuring message history preservation and session token usage tracking.
+* basic_groq_api/summarize.py: A document summarizer that accepts any plain text file, handles truncation for large context limits, and outputs structured summaries.
 * prompt_techniques_enggineering/summarize_v2.py: A document summarizer demonstrating plain vs structured XML prompts using the --compare flag.
 * prompt_techniques_enggineering/persona_bot.py: An interactive character Q&A chatbot allowing real-time switching between four distinct system-prompt-driven personas:
   * Coach Alex: Silicon Valley career coach.
@@ -42,13 +42,13 @@ This repository contains a suite of CLI tools configured to interface with the G
 ## Usage
 
 * To run the connection test:
-  python setup_check_groq.py
+  python basic_groq_api/setup_check_groq.py
 
 * To start the chat loop:
-  python chat.py
+  python basic_groq_api/chat.py
 
 * To summarize a document:
-  python summarize.py <file_path>
+  python basic_groq_api/summarize.py <file_path>
   python prompt_techniques_enggineering/summarize_v2.py <file_path> [--compare]
 
 * To interact with different personas:
