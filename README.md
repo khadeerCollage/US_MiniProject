@@ -23,6 +23,10 @@ This repository contains a suite of CLI tools configured to interface with the G
 * Real_Time_Agents/real_search.py: Search integrations for the Research Assistant, implementing DuckDuckGo, SerpAPI, and Tavily interfaces.
 * multi-agents/agent1_summarize.py: Part of the multi-agent pipeline. A focused subagent that reads a CSV dataset, profiles it, and generates a structured summary using Groq.
 * multi-agents/agent2_insights.py: Part of the multi-agent pipeline. Generates strategic, actionable business insights from Agent 1's structured summary using Groq and Chain-of-Thought reasoning.
+* multi-agents/orchestrator.py: The upgraded orchestrator leveraging a LangGraph state machine with conditional routing and retries.
+* multi-agents/benchmark.py: A testing script validating that proper orchestration on free tier models reaches paid tier quality.
+* model_manager.py: The intelligence router dynamically directing tasks to optimal free tier models based on task complexity.
+* reflection_engine.py: The self-reflection loop engine boosting output quality.
 * MCP (Model Context Protocol)/test_mcp_tools.py: Tests the 5 career research MCP tools directly without running a server.
 * MCP (Model Context Protocol)/mcp_server_career.py: A custom FastMCP server that exposes 5 career research and analysis tools to any MCP-compatible client.
 * MCP (Model Context Protocol)/agent_with_mcp.py: An interactive CLI agent connected to the MCP server using the Groq API.
@@ -34,7 +38,7 @@ This repository contains a suite of CLI tools configured to interface with the G
    .\venv\Scripts\activate
 
 2. Install dependencies:
-   pip install groq
+   pip install groq langgraph langchain-core google-generativeai pandas anthropic
 
 3. Configure your API key in a local .env file in the root directory:
    GROQ_API_KEY="your_api_key_here"
@@ -67,7 +71,7 @@ This repository contains a suite of CLI tools configured to interface with the G
 * To run the autonomous research assistant agent:
   python Real_Time_Agents/research_assistant.py
 
-* To run the multi-agent profiling and insights pipeline:
+* To run the multi-agent pipeline:
   - Run Agent 1 (CSV Summarization) standalone:
     ```bash
     python multi-agents/agent1_summarize.py multi-agents/sample_data.csv
@@ -76,7 +80,16 @@ This repository contains a suite of CLI tools configured to interface with the G
     ```bash
     python multi-agents/agent2_insights.py
     ```
-    *(Note: Agent 2 runs Agent 1 under the hood to profile `sample_data.csv`, then applies Chain-of-Thought reasoning to generate structured strategic insights).*
+
+* To run the advanced LangGraph Orchestration pipeline:
+  - Run the complete async state-machine pipeline:
+    ```bash
+    python multi-agents/orchestrator.py multi-agents/sample_data.csv
+    ```
+  - Run the orchestration quality benchmark:
+    ```bash
+    python multi-agents/benchmark.py
+    ```
 
 * To run the MCP Server and Agent:
   

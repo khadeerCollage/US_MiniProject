@@ -1,99 +1,47 @@
-# Multi-Agent Data Pipeline
+# Multi-Agent Data Pipeline with LangGraph
 
-A simple 3-agent pipeline with orchestration, retries, and output validation.
+This directory contains an advanced multi-agent pipeline using LangGraph orchestration, asynchronous I/O, and self-reflection loops.
 
 ## Quick Start
 
 ```bash
 # Activate virtual environment
-source venv/bin/activate
-# Install dependencies
-pip install pandas groq
+.\venv\Scripts\activate
 
 # Run the full pipeline (uses sample_data.csv)
-python orchestrator.py
+python multi-agents/orchestrator.py
 
 # With your own CSV
-python orchestrator.py mydata.csv
+python multi-agents/orchestrator.py mydata.csv
 
-# Print the report in terminal too
-python orchestrator.py --show-report
+# Run the orchestration quality benchmark
+python multi-agents/benchmark.py
 ```
 
-## File Map
+## File Overview
 
-| File | What it does |
-|------|-------------|
-| `sample_data.csv` | Test data (30 AI job market records) |
-| `validators.py` | Validates the output of each agent before passing it forward |
-| `agent1_summarize.py` | Takes the CSV and generates a statistical summary |
-| `agent2_insights.py` | Takes the summary and generates actionable insights |
-| `agent3_report.py` | Combines the summary and insights into a Markdown report |
-| `orchestrator.py` | Runs the pipeline, handles retries, and saves the output |
+* `sample_data.csv`: Test data (30 AI job market records).
+* `agent1_summarize.py`: Takes the CSV and generates a statistical summary.
+* `agent2_insights.py`: Takes the summary and generates actionable insights.
+* `agent3_report.py`: Combines the summary and insights into a Markdown report.
+* `validators.py`: Legacy validators for the older sequential pipeline.
+* `orchestrator.py`: The upgraded orchestrator leveraging a LangGraph state machine. It handles async execution, conditional routing based on quality scores, and retries.
+* `benchmark.py`: A testing script validating that proper orchestration on free tier models reaches paid tier quality.
 
-## How it Works
+## How It Works
 
-### 1. Orchestrator -> Subagent
-```text
-orchestrator.py
-    |
-    +-> agent1_summarize.summarize_csv()
-    |
-    +-> agent2_insights.generate_insights(agent1_result)
-    |
-    +-> agent3_report.write_report(agent1_result, agent2_result)
-    |
-    +-> report_TIMESTAMP.md
-```
-Each agent handles one specific task. The orchestrator manages the flow between them so they don't have to worry about each other.
+### 1. LangGraph State Machine
+The orchestration uses a state machine defined in `orchestrator.py`. Instead of a simple sequential script, LangGraph defines nodes and conditional edges:
 
-### 2. Retries and Backoff
-If something goes wrong (like a rate limit or a bad LLM response), the orchestrator will try again and wait a bit longer each time:
-```text
-attempt 1 -> fails -> wait 2s
-attempt 2 -> fails -> wait 4s
-attempt 3 -> fails -> wait 8s -> stop the pipeline
-```
-You can change these in `orchestrator.py` (`MAX_RETRIES` and `RETRY_BASE_SECS`).
+* `load_csv`: Loads data into the pipeline state.
+* `summarize`: Agent 1 processes data with an async reflection loop.
+* `insights`: Agent 2 processes the summary with an async reflection loop.
+* `report`: Agent 3 writes the final report.
 
-### 3. Validation
-Before passing data to the next step, we check the output to make sure the LLM didn't just return garbage.
-```python
-result = run_agent(...)
-validation = validate_output(result)
+Conditional edges route execution back to the same node for a retry if the quality score is too low, ensuring high quality before advancing.
 
-if validation.passed:
-    # move on to the next agent
-else:
-    # retry this agent
-```
-The validators just make sure the output has the right structure, minimum length, and actually contains data instead of an error message.
+### 2. Async Execution
+The pipeline relies on `model_manager.py` (in the root directory) to dispatch requests to the LLM. It uses `AsyncGroqProvider` and `AsyncGeminiProvider` to prevent the event loop from blocking, enabling massive speedups when multiple agents run in parallel (as seen in `benchmark.py`).
 
-## Testing Standalone Agents
-
-If you want to run the agents by themselves without the orchestrator:
-
-```bash
-# Test just Agent 1
-python agent1_summarize.py sample_data.csv
-
-# Test Agent 1 + 2
-python agent2_insights.py
-
-# Test all 3 agents
-python agent3_report.py
-
-# Test the validators
-python validators.py
-```
-
-## Passing Data Between Agents
-
-Instead of just passing plain text around, we pass dictionaries containing the full context. 
-
-```python
-result1 = agent1(csv_path)         # returns a dict with summary + raw_stats + tokens
-result2 = agent2(result1)          # receives EVERYTHING — summary AND raw numbers
-```
-
-This way, downstream agents get everything they need. For example, Agent 2 can look at the exact raw numbers from Agent 1, not just the text summary.
+### 3. Self-Reflection
+Every node uses `ReflectionEngine` (in the root directory). Instead of accepting the first output, the agent critiques its own work and improves it. This reliably boosts free model quality to match more expensive models.
