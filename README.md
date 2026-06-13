@@ -1,4 +1,4 @@
-# Groq API Integration and Agentic Workflows
+# US Mini Project: LLM Orchestration and Agentic Workflows
 
 This repository contains tools, libraries, and pipelines demonstrating API integration with Groq, Google Gemini, and Anthropic. It covers basic API wrapper scripts, prompt optimization benchmarks, tool-calling agents, state-machine orchestration with LangGraph, and Model Context Protocol (MCP) servers.
 
@@ -12,33 +12,33 @@ The goal of this project is to implement robust, cost-effective orchestration te
 
 ## Roadmap
 
-### Phase 1: API Foundations & Basic Workflows (Completed)
+### Phase 1: API Foundations and Basic Workflows
 - Connection verification and test scripts for Groq API.
 - CLI conversational chat tool with context length tracking and usage statistics.
 - Basic document summarizer managing context limits.
 
-### Phase 2: Prompt Optimization & Evaluation (Completed)
+### Phase 2: Prompt Optimization and Evaluation
 - System-prompt switching mechanism for multi-persona bots.
 - Few-shot learning examples for tone and constraint shaping.
 - Chain-of-Thought reasoning loop implementation.
 - Automated prompt testing harness to evaluate latency and response quality.
 
-### Phase 3: Tool Use & Function Calling (Completed)
+### Phase 3: Tool Use and Function Calling
 - Custom function declarations for web search, file systems, and math operations.
 - Execution loop logic for function-calling.
 - Autonomous research assistant utilizing sequential tool calls to answer questions.
 
-### Phase 4: State-Machine Pipelines & Validation (Completed)
+### Phase 4: State-Machine Pipelines and Validation
 - Intelligence router with fallback options for async concurrency.
 - Self-reflection engine with critique-and-improve editing loops.
 - LangGraph state-machine pipeline to profile CSV data, generate insights, and compile Markdown reports.
 
-### Phase 5: Model Context Protocol (MCP) Server (Completed)
+### Phase 5: Model Context Protocol (MCP) Server
 - FastMCP server exposing career analysis and job search functions.
 - CLI agent translating local tools to Groq schema definitions.
 - Claude Desktop configuration helper for direct desktop application access.
 
-### Phase 6: Web Interface & UI (Planned)
+### Phase 6: Web Interface and User Interface
 - Migration of terminal utilities to a React / Next.js web application.
 - Real-time visualization for LangGraph pipeline states.
 - Local SQLite database integration for query and session history.
