@@ -10,6 +10,28 @@ The goal of this project is to implement robust, cost-effective orchestration te
 
 ---
 
+## Simplified Overview (Guide)
+
+### What this project does
+Imagine you have a complex spreadsheet of data (like job listings or salary tables). Instead of a human manually reading the data, finding patterns, and writing a report, this project uses a coordinated team of artificial intelligence agents to analyze the data and generate professional reports automatically.
+
+### How the system works step-by-step
+1. **Reading the Data**: The system loads the spreadsheet and analyzes columns and statistics.
+2. **Summarizing**: An AI agent reads the statistics and writes a natural language summary of the dataset.
+3. **Extracting Insights**: A second AI agent reviews the summary to find key trends and strategic recommendations.
+4. **Writing the Report**: A third AI agent takes the summary and insights and formats them into a polished, executive-ready document.
+5. **The Critique and Improvement Loop**: At each step, a validator agent reviews the draft, scores it from 1 to 10, and provides feedback. If the score is too low, the writing agent edits its work based on the feedback until it meets the quality threshold.
+
+### How the folders connect
+The project is built sequentially, with each folder representing a step in developing the full agent system:
+- **`basic_groq_api/`**: Basic connections to verify the AI link works and perform simple chats or summaries.
+- **`prompt_techniques_enggineering/`**: Experiments in how to write better instructions (prompts) for the AI, such as role-playing or step-by-step reasoning.
+- **`Real_Time_Agents/`**: Giving the AI physical tools (like web search and calculators) so it can interact with the outside world and check facts.
+- **`multi-agents/`**: The final pipeline where the individual AI agents are joined together in a state graph to compile automated reports.
+- **`MCP (Model Context Protocol)/`**: Standard protocol integrations allowing the tools to be accessed directly inside external applications like Claude Desktop.
+
+---
+
 ## Roadmap
 
 ### Phase 1: API Foundations and Basic Workflows
