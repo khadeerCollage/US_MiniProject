@@ -66,6 +66,7 @@ class TaskComplexity(Enum):
     SIMPLE    = "simple"     # Short output, clear structure    -> fast cheap model
     MEDIUM    = "medium"     # Multi-paragraph, some reasoning  -> mid-tier model
     COMPLEX   = "complex"    # Deep analysis, long output       -> best available model
+    LONG_CONTEXT = "long_context" # Large documents            -> Gemini 1.5 Flash (1M tokens)
     CRITICAL  = "critical"   # High stakes, must be excellent   -> Anthropic
 
 
@@ -94,6 +95,7 @@ class GroqProvider:
         TaskComplexity.SIMPLE:   "llama-3.3-70b-versatile",  # 8b blocked by org
         TaskComplexity.MEDIUM:   "llama-3.3-70b-versatile",
         TaskComplexity.COMPLEX:  "llama-3.3-70b-versatile",
+        TaskComplexity.LONG_CONTEXT: "llama-3.3-70b-versatile", # Fallback if Gemini fails
         TaskComplexity.CRITICAL: "llama-3.3-70b-versatile",
     }
 
@@ -145,6 +147,7 @@ class GeminiProvider:
         TaskComplexity.SIMPLE:   "gemini-1.5-flash",
         TaskComplexity.MEDIUM:   "gemini-1.5-flash",
         TaskComplexity.COMPLEX:  "gemini-1.5-pro",
+        TaskComplexity.LONG_CONTEXT: "gemini-1.5-flash",
         TaskComplexity.CRITICAL: "gemini-1.5-pro",
     }
 
@@ -246,6 +249,7 @@ class AsyncGroqProvider:
         TaskComplexity.SIMPLE:   "llama-3.3-70b-versatile",
         TaskComplexity.MEDIUM:   "llama-3.3-70b-versatile",
         TaskComplexity.COMPLEX:  "llama-3.3-70b-versatile",
+        TaskComplexity.LONG_CONTEXT: "llama-3.3-70b-versatile", # Fallback
         TaskComplexity.CRITICAL: "llama-3.3-70b-versatile",
     }
 
@@ -440,6 +444,9 @@ class ModelManager:
             if self.anthropic.is_available():
                 return self.anthropic
 
+        if complexity == TaskComplexity.LONG_CONTEXT and self.gemini.is_available():
+            return self.gemini
+
         if self.groq.is_available():      return self.groq
         if self.gemini.is_available():    return self.gemini
         if self.anthropic.is_available(): return self.anthropic
@@ -513,6 +520,9 @@ class ModelManager:
         if complexity == TaskComplexity.CRITICAL and not self.prefer_free:
             if self.async_anthropic.is_available():
                 return self.async_anthropic
+
+        if complexity == TaskComplexity.LONG_CONTEXT and self.async_gemini.is_available():
+            return self.async_gemini
 
         if self.async_groq.is_available():      return self.async_groq
         if self.async_gemini.is_available():    return self.async_gemini
