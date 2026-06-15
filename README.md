@@ -30,7 +30,7 @@ Imagine an HR team analyzing thousands of job postings and salary distributions 
 ### How the folders connect
 The project is built sequentially, with each folder representing a step in developing this automated analysis system:
 - **`basic_groq_api/`**: Connection setups to verify the AI link works and perform simple chats or menu summaries.
-- **`prompt_techniques_enggineering/`**: Experiments in writing better instructions for the AI, such as role-playing as customer service or thinking step-by-step.
+- **`prompt_engineering/`**: Experiments in writing better instructions for the AI, such as role-playing as customer service or thinking step-by-step.
 - **`Real_Time_Agents/`**: Giving the AI tools (like calculators for tax calculations and search engines for ingredient costs) so it can fact-check real-world information.
 - **`multi-agents/`**: The final pipeline where the individual AI agents are joined together in a state graph to compile automated shop reports.
 - **`MCP (Model Context Protocol)/`**: Protocol integrations allowing the shop analysis tools to be accessed directly inside external applications like Claude Desktop.
@@ -119,7 +119,7 @@ US_MiniProject/
 ├── reflection_engine.py              # Self-reflection validation loops (critique/improve)
 │
 ├── basic_groq_api/                   # Phase 1: Connectivity and basic API features
-├── prompt_techniques_enggineering/   # Phase 2: System prompts, persona bots, and evaluation
+├── prompt_engineering/               # Phase 2: System prompts, persona bots, and evaluation
 ├── Real_Time_Agents/                 # Phase 3: Function calling and tools integration
 ├── multi-agents/                     # Phase 4: LangGraph orchestration and validation
 └── MCP (Model Context Protocol)/    # Phase 5: FastMCP server and desktop tools
@@ -139,7 +139,7 @@ To make sure the AI answers correctly, we run experiments on how to write instru
 - **`persona_bot.py` (Changing Customer Service Roles)**: Tests how the AI acts in different roles (e.g., acting as a Career Coach or a Web Developer) to see how changing the system instructions alters the tone.
 - **`persona_bot_v2.py` (Teaching by Example)**: Uses few-shot learning. It feeds the AI examples of how to respond so it mimics the exact customer service tone desired.
 - **`chain_of_thought.py` (Thinking Out Loud)**: Forces the AI to write its thought process first inside a thinking tag before giving an answer.
-- **`prompt_scroing_upon_techniques.py` (The Quality Tester)**: An automated testing tool. It runs multiple prompts, scores the quality of the answers, and outputs a report showing which prompting method was most accurate.
+- **`prompt_scoring_techniques.py` (The Quality Tester)**: An automated testing tool. It runs multiple prompts, scores the quality of the answers, and outputs a report showing which prompting method was most accurate.
 
 ### 3. Tool Integrations (Giving the Cashier a Calculator & Map)
 AI models are bad at math and do not know real-time prices. We give them physical tools to use:
@@ -203,10 +203,10 @@ python basic_groq_api/chat.py
 ### Prompt Engineering and Performance Evaluation
 ```bash
 # Swappable system personas bot
-python prompt_techniques_enggineering/persona_bot.py
+python prompt_engineering/persona_bot.py
 
 # Benchmark prompt techniques
-python prompt_techniques_enggineering/prompt_scroing_upon_techniques.py --topic career
+python prompt_engineering/prompt_scoring_techniques.py --topic career
 ```
 
 ### Tool Use & Research Agent
