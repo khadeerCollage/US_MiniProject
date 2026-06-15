@@ -14,6 +14,8 @@ Usage:
 
 import sys
 import json
+import os
+import requests
 from datetime import datetime
 from mcp.server.fastmcp import FastMCP
 
@@ -31,7 +33,7 @@ mcp = FastMCP(
 @mcp.tool()
 def search_ai_jobs(role: str, company: str = "", remote_only: bool = False) -> str:
     """
-    Search for AI engineering job listings.
+    Search for AI engineering job listings dynamically via SerpAPI.
 
     Args:
         role:        Job role to search (e.g., 'AI Engineer', 'ML Engineer')
@@ -39,103 +41,58 @@ def search_ai_jobs(role: str, company: str = "", remote_only: bool = False) -> s
         remote_only: If True, only show remote-friendly positions
 
     Returns:
-        Formatted list of matching job listings with key details.
+        Formatted list of live matching job listings with key details.
     """
-    JOBS_DB = [
-        {
-            "id": "TC-001", "company": "TechCorp", "role": "AI Applications Engineer",
-            "level": "Mid", "salary": "$160k-$210k", "remote": True,
-            "skills": ["Python", "LLM APIs", "System Design"],
-            "apply": "careers.techcorp.com", "posted": "3 days ago"
-        },
-        {
-            "id": "TC-002", "company": "TechCorp", "role": "Research Engineer",
-            "level": "Senior", "salary": "$180k-$240k", "remote": True,
-            "skills": ["Python", "PyTorch", "ML Research", "Transformers"],
-            "apply": "careers.techcorp.com", "posted": "1 week ago"
-        },
-        {
-            "id": "OAI-001", "company": "OpenAI", "role": "AI Engineer",
-            "level": "Mid", "salary": "$170k-$220k", "remote": False,
-            "skills": ["Python", "GPT APIs", "System Design", "APIs"],
-            "apply": "openai.com/careers", "posted": "5 days ago"
-        },
-        {
-            "id": "OAI-002", "company": "OpenAI", "role": "ML Engineer",
-            "level": "Senior", "salary": "$195k-$260k", "remote": False,
-            "skills": ["Python", "PyTorch", "Distributed Systems"],
-            "apply": "openai.com/careers", "posted": "2 days ago"
-        },
-        {
-            "id": "GDM-001", "company": "Google DeepMind", "role": "Research Engineer",
-            "level": "Senior", "salary": "$200k-$280k", "remote": False,
-            "skills": ["Python", "JAX", "ML Research", "Publications"],
-            "apply": "deepmind.google/careers", "posted": "1 week ago"
-        },
-        {
-            "id": "MET-001", "company": "Meta AI", "role": "AI Engineer",
-            "level": "Mid", "salary": "$160k-$200k", "remote": True,
-            "skills": ["Python", "PyTorch", "LLaMA", "Open Source"],
-            "apply": "metacareers.com", "posted": "4 days ago"
-        },
-        {
-            "id": "COH-001", "company": "Cohere", "role": "AI Engineer",
-            "level": "Entry/Mid", "salary": "$140k-$175k", "remote": True,
-            "skills": ["Python", "LLM APIs", "NLP", "APIs"],
-            "apply": "cohere.com/careers", "posted": "2 days ago"
-        },
-        {
-            "id": "HUG-001", "company": "Hugging Face", "role": "ML Engineer",
-            "level": "Mid", "salary": "$145k-$175k", "remote": True,
-            "skills": ["Python", "Transformers", "Open Source", "HF Hub"],
-            "apply": "huggingface.co/jobs", "posted": "6 days ago"
-        },
-        {
-            "id": "PER-001", "company": "Perplexity AI", "role": "AI Engineer",
-            "level": "Mid", "salary": "$155k-$190k", "remote": True,
-            "skills": ["Python", "RAG", "LLM APIs", "Search"],
-            "apply": "perplexity.ai/careers", "posted": "1 day ago"
-        },
-        {
-            "id": "TOG-001", "company": "Together AI", "role": "ML Engineer",
-            "level": "Mid", "salary": "$155k-$185k", "remote": True,
-            "skills": ["Python", "LLMs", "Inference Optimization"],
-            "apply": "together.ai/careers", "posted": "3 days ago"
-        },
-    ]
+    api_key = os.environ.get("SERPAPI_KEY", "")
+    if not api_key:
+        return "Error: SERPAPI_KEY is not set in the environment. Cannot perform dynamic job search."
 
-    role_lower    = role.lower()
-    company_lower = company.lower()
+    query = role
+    if company:
+        query += f" at {company}"
+    if remote_only:
+        query += " remote"
 
-    results = [
-        j for j in JOBS_DB
-        if (role_lower in j["role"].lower() or role_lower in " ".join(j["skills"]).lower())
-        and (not company_lower or company_lower in j["company"].lower())
-        and (not remote_only or j["remote"])
-    ]
+    params = {
+        "engine": "google_jobs",
+        "q": query,
+        "hl": "en",
+        "api_key": api_key
+    }
 
-    if not results:
+    try:
+        response = requests.get("https://serpapi.com/search", params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+    except Exception as e:
+        return f"Error fetching live jobs from SerpAPI: {str(e)}"
+
+    jobs = data.get("jobs_results", [])
+    if not jobs:
         return (
-            f"No listings found for role='{role}'"
-            + (f", company='{company}'" if company else "")
-            + (", remote only" if remote_only else "")
-            + ".\nTry broader terms: 'AI Engineer', 'ML Engineer', 'Research Engineer'"
+            f"No live listings found for query: '{query}'\n"
+            "Try broader terms: 'AI Engineer', 'ML Engineer', 'Research Engineer'"
         )
 
-    lines = [f"[JOB SEARCH: '{role}'"
-             + (f" at {company}" if company else "")
-             + (f" | remote only" if remote_only else "")
-             + f"] - {len(results)} results\n"]
+    lines = [f"[LIVE JOB SEARCH: '{query}'] - {len(jobs)} results from Google Jobs\n"]
 
-    for j in results:
-        remote_tag = "Remote" if j["remote"] else "On-site"
-        skills_str = ", ".join(j["skills"][:3])
+    for idx, j in enumerate(jobs[:10], 1): # Limit to top 10 results
+        company_name = j.get("company_name", "Unknown Company")
+        title = j.get("title", "Unknown Role")
+        location = j.get("location", "Unknown Location")
+        
+        posted_at = j.get("detected_extensions", {}).get("posted_at", "Recently")
+        salary = j.get("detected_extensions", {}).get("salary", "Salary not listed")
+        
+        related_links = j.get("related_links", [])
+        apply_link = related_links[0].get("link", "No link provided") if related_links else "No link provided"
+
         lines.append(
             f"--------------------------------------------------\n"
-            f"  [{j['id']}] {j['company']} - {j['role']} ({j['level']})\n"
-            f"  Salary: {j['salary']} | {remote_tag} | Posted: {j['posted']}\n"
-            f"  Key skills: {skills_str}\n"
-            f"  Apply: {j['apply']}"
+            f"  [{idx}] {company_name} - {title}\n"
+            f"  Location: {location} | Posted: {posted_at}\n"
+            f"  Salary Info: {salary}\n"
+            f"  Link: {apply_link}"
         )
 
     return "\n".join(lines)
