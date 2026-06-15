@@ -114,7 +114,8 @@ Instructions:
         text = response.text
 
         # Parse the structured critique
-        score_match  = re.search(r"QUALITY_SCORE:\s*(\d+)", text)
+        # Handle "8/10", "8 out of 10", "8.5", etc.
+        score_match  = re.search(r"QUALITY_SCORE:?\s*(\d+(?:\.\d+)?)", text, re.IGNORECASE)
         issues_match = re.search(r"CRITICAL_ISSUES:\s*(.*?)(?=IMPROVEMENT|$)", text, re.DOTALL)
         instruct_match = re.search(r"IMPROVEMENT_INSTRUCTIONS:\s*(.*?)(?=VERDICT|$)", text, re.DOTALL)
         verdict_match = re.search(r"VERDICT:\s*(ACCEPT|IMPROVE)", text)
@@ -231,7 +232,8 @@ Instructions:
             task_label="Reflection-Critique"
         )
         text           = response.text
-        score_match    = re.search(r"QUALITY_SCORE:\s*(\d+)", text)
+        # Handle "8/10", "8 out of 10", "8.5", etc.
+        score_match    = re.search(r"QUALITY_SCORE:?\s*(\d+(?:\.\d+)?)", text, re.IGNORECASE)
         issues_match   = re.search(r"CRITICAL_ISSUES:\s*(.*?)(?=IMPROVEMENT|$)", text, re.DOTALL)
         instruct_match = re.search(r"IMPROVEMENT_INSTRUCTIONS:\s*(.*?)(?=VERDICT|$)", text, re.DOTALL)
         verdict_match  = re.search(r"VERDICT:\s*(ACCEPT|IMPROVE)", text)
