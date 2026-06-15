@@ -112,6 +112,9 @@ _mgr    = ModelManager(prefer_free=True)
 _engine = ReflectionEngine(_mgr, max_reflections=2)
 
 
+# NOTE: This is a synchronous node because it performs purely local, blocking I/O (reading a CSV).
+# LangGraph natively handles this by wrapping sync nodes in asyncio.to_thread() internally,
+# allowing it to seamlessly mix with our async agent nodes without blocking the event loop.
 def node_load_csv(state: PipelineState) -> dict:
     """Load and profile the CSV file. Pure Python — no model calls."""
     print("\n    [Node: load_csv] Loading and profiling CSV...")
