@@ -139,6 +139,15 @@ def node_load_csv(state: PipelineState) -> dict:
         "errors":      state.get("errors", [])
     }
 
+def node_check_load_csv(state: PipelineState) -> str:
+    """Conditional edge: Halt if CSV failed to load."""
+    if state.get("errors"):
+        print(f"\n    [Check: load_csv] Errors detected: {state['errors']}")
+        print("      -> Halting pipeline.")
+        return "to_end"
+    return "to_summarize"
+
+
 
 async def node_summarize(state: PipelineState) -> dict:
     """Agent 1: CSV data -> natural language summary (async, with reflection)."""
@@ -390,8 +399,17 @@ def build_pipeline() -> StateGraph:
     workflow.set_entry_point("load_csv")
 
     # -- Unconditional edges -----------------------------------------------
-    workflow.add_edge("load_csv",    "summarize")
     workflow.add_edge("save_report", END)
+
+    # -- Conditional edges (quality-based routing & error handling) --------
+    workflow.add_conditional_edges(
+        "load_csv",
+        node_check_load_csv,
+        {
+            "to_summarize": "summarize",
+            "to_end": END
+        }
+    )
 
     # -- Conditional edges (quality-based routing) -------------------------
     workflow.add_conditional_edges(
