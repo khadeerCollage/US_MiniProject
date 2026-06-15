@@ -203,10 +203,22 @@ def node_check_summary(state: PipelineState) -> str:
     Conditional edge function: decides where to go after summarize node.
     Returns a string key that LangGraph uses to pick the next node.
     """
+    from validators import validate_summary
+    
     score   = state.get("summary_score", 0)
     retries = state.get("summary_retries", 0)
+    summary_text = state.get("summary", "")
 
     print(f"\n    [Check: summary] Score: {score}/10 | Retries: {retries}/3")
+    
+    vr = validate_summary(summary_text)
+    if not vr.passed:
+        print(f"      -> Structural validation FAILED: {vr}")
+        if retries < 3:
+            return "retry_summary"
+        else:
+            print("      -> Max retries reached despite structural failure. Proceeding.")
+            return "to_insights"
 
     if score >= 6:
         print("      -> Proceeding to insights ")
@@ -274,10 +286,22 @@ Generate insights that are specific, data-backed, and immediately actionable.
 
 def node_check_insights(state: PipelineState) -> str:
     """Conditional edge after insights node."""
+    from validators import validate_insights
+    
     score   = state.get("insights_score", 0)
     retries = state.get("insights_retries", 0)
+    insights_text = state.get("insights", "")
 
     print(f"\n    [Check: insights] Score: {score}/10 | Retries: {retries}/3")
+    
+    vr = validate_insights(insights_text)
+    if not vr.passed:
+        print(f"      -> Structural validation FAILED: {vr}")
+        if retries < 3:
+            return "retry_insights"
+        else:
+            print("      -> Max retries reached despite structural failure. Proceeding.")
+            return "to_report"
 
     if score >= 6:
         print("      -> Proceeding to report ")
@@ -354,10 +378,22 @@ Create a polished, publishable report that an AI job seeker can share on GitHub.
 
 def node_check_report(state: PipelineState) -> str:
     """Conditional edge after report node."""
+    from validators import validate_report
+    
     score   = state.get("report_score", 0)
     retries = state.get("report_retries", 0)
+    report_text = state.get("report", "")
 
     print(f"\n    [Check: report] Score: {score}/10 | Retries: {retries}/3")
+    
+    vr = validate_report(report_text)
+    if not vr.passed:
+        print(f"      -> Structural validation FAILED: {vr}")
+        if retries < 3:
+            return "retry_report"
+        else:
+            print("      -> Max retries reached despite structural failure. Proceeding.")
+            return "to_save"
 
     if score >= 6 or retries >= 3:
         return "to_save"

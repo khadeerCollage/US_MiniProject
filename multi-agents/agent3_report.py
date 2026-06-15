@@ -123,16 +123,18 @@ The primary reader is an engineer in India targeting remote US AI jobs.
 Make the recommendations specific and immediately actionable.
 """
 
-    response = client.chat.completions.create(
-        model=MODEL,
-        max_tokens=MAX_TOKENS,
-        messages=[
-            {"role": "system", "content": AGENT3_SYSTEM_PROMPT},
-            {"role": "user", "content": user_message}
-        ]
-    )
-
-    report_text = response.choices[0].message.content
+    try:
+        response = client.chat.completions.create(
+            model=MODEL,
+            max_tokens=MAX_TOKENS,
+            messages=[
+                {"role": "system", "content": AGENT3_SYSTEM_PROMPT},
+                {"role": "user", "content": user_message}
+            ]
+        )
+        report_text = response.choices[0].message.content
+    except Exception as e:
+        return {"status": "error", "error": f"Groq API call failed: {e}"}
     word_count = len(report_text.split())
     heading_count = len(re.findall(r"^#{1,3}\s+", report_text, re.MULTILINE))
 

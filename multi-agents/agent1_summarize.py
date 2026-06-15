@@ -148,16 +148,18 @@ CATEGORICAL COLUMN SUMMARIES:
 """
 
     # Step 3: Call Groq
-    response = client.chat.completions.create(
-        model=MODEL,
-        max_tokens=MAX_TOKENS,
-        messages=[
-            {"role": "system", "content": AGENT1_SYSTEM_PROMPT},
-            {"role": "user", "content": user_message}
-        ]
-    )
-
-    summary_text = response.choices[0].message.content
+    try:
+        response = client.chat.completions.create(
+            model=MODEL,
+            max_tokens=MAX_TOKENS,
+            messages=[
+                {"role": "system", "content": AGENT1_SYSTEM_PROMPT},
+                {"role": "user", "content": user_message}
+            ]
+        )
+        summary_text = response.choices[0].message.content
+    except Exception as e:
+        return {"status": "error", "error": f"Groq API call failed: {e}"}
 
     prompt_tokens = response.usage.prompt_tokens if response.usage else 0
     completion_tokens = response.usage.completion_tokens if response.usage else 0

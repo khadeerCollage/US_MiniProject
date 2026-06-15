@@ -125,16 +125,18 @@ Generate 4-6 actionable insights for an engineer targeting US AI company jobs.
         print("Agent 2 Calling model with CoT prompt...")
 
     # Call Groq API compatible with OpenAI library format
-    response = client.chat.completions.create(
-        model=MODEL,
-        max_tokens=MAX_TOKENS,
-        messages=[
-            {"role": "system", "content": AGENT2_SYSTEM_PROMPT},
-            {"role": "user", "content": user_message}
-        ]
-    )
-
-    full_output = response.choices[0].message.content
+    try:
+        response = client.chat.completions.create(
+            model=MODEL,
+            max_tokens=MAX_TOKENS,
+            messages=[
+                {"role": "system", "content": AGENT2_SYSTEM_PROMPT},
+                {"role": "user", "content": user_message}
+            ]
+        )
+        full_output = response.choices[0].message.content
+    except Exception as e:
+        return {"status": "error", "error": f"Groq API call failed: {e}"}
 
     # Extract <thinking> and <insights> sections separately
     thinking_match = re.search(r"<thinking>(.*?)</thinking>", full_output, re.DOTALL)
